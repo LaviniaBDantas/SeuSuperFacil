@@ -1,5 +1,5 @@
 body{
-    background-color: lightgray;
+    background-color: rgb(219, 213, 197);
 }
 
 .caixa {
@@ -43,6 +43,6 @@ button {
     border: 1px solid #ccc; /* Adiciona borda leve aos inputs */
     box-sizing: border-box;
     color: white; /* Cor do texto */
-    background-color: blue; /* Fundo vermelho */
+    background-color:red; /* Fundo vermelho */
     border: none; /* Remove a borda padrão do botão */
 }

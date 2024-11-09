@@ -75,49 +75,16 @@
                 <div class="col-md-5 col-lg-4 order-md-last">
                     <h4 class="d-flex justify-content-between align-items-center mb-3">
                         <span class="text-success">Seu carrinho</span>
-                        <span class="badge bg-success rounded-pill"> 3 itens</span>
+                        <span class="badge bg-success rounded-pill" id="total-itens">0 itens</span>
                     </h4>
-                    <ul class="list-group mb-3">
-                        <li class="list-group-item d-flex justify-content-between lh-sm">
-                            <div>
-                                <h6 class="my-0">Amaciante Ypê</h6>
-                                <small class="text-body-secondary">Brief description</small>
-                            </div>
-                            <span class="text-body-secondary">R$24.99</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between lh-sm">
-                            <div>
-                                <h6 class="my-0">Coca-Cola 1L</h6>
-                                <small class="text-body-secondary">Brief description</small>
-                            </div>
-                            <span class="text-body-secondary">R$8</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between lh-sm">
-                            <div>
-                                <h6 class="my-0">Biscoito de polvilho</h6>
-                                <small class="text-body-secondary">Brief description</small>
-                            </div>
-                            <span class="text-body-secondary">R$5</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between bg-body-tertiary">
-                            <div class="text-success">
-                                <h6 class="my-0">Cupom de desconto</h6>
-                                <small>CUPOMDESCONTO</small>
-                            </div>
-                            <span class="text-success">−R$3</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between">
-                            <span>Total</span>
-                            <strong>R$34.99</strong>
-                        </li>
+                    <ul class="list-group mb-3" id="lista-carrinho">
+                        <!-- Produtos do carrinho serão inseridos aqui via JS -->
                     </ul>
-
-                    <form class="card p-2">
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Cupom de desconto">
-                            <button type="submit" class="btn btn-secondary">Aplicar</button>
-                        </div>
-                    </form>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span>Total</span>
+                        <strong id="total-preco">R$ 0,00</strong>
+                    </li>
+                    <a href="#" class="btn btn-success w-100 mt-3">Finalizar Compra</a>
                 </div>
                 <div class="col-md-7 col-lg-8">
                     <h4 class="mb-3">Informações pessoais</h4>
@@ -314,6 +281,102 @@
             </ul>
         </footer>
     </div>
+
+    <script>
+        // Função para carregar o carrinho do localStorage
+        function carregarCarrinho() {
+            let carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
+            let listaCarrinho = document.getElementById('lista-carrinho');
+            let totalItens = document.getElementById('total-itens');
+            let totalPreco = document.getElementById('total-preco');
+    
+            // Limpa a lista antes de preenchê-la
+            listaCarrinho.innerHTML = '';
+            let total = 0;
+            let totalQuantidade = 0;
+    
+            // Verifica se o carrinho está vazio
+            if (carrinho.length === 0) {
+                listaCarrinho.innerHTML = '<li class="list-group-item">Seu carrinho está vazio.</li>';
+                totalItens.textContent = '0 itens';
+                totalPreco.textContent = 'R$ 0,00';
+                return;
+            }
+    
+            // Itera sobre os itens do carrinho e os insere na lista
+            carrinho.forEach(item => {
+                let itemTotal = item.preco * item.quantidade;
+                total += itemTotal;
+                totalQuantidade += item.quantidade;
+    
+                // Cria a estrutura do item no carrinho
+                let li = document.createElement('li');
+                li.className = "list-group-item d-flex justify-content-between lh-sm";
+                li.innerHTML = `
+                    <div>
+                        <h6 class="my-0">${item.descricao}</h6>
+                        <small class="text-muted">Preço unitário: R$ ${item.preco.toFixed(2).replace('.', ',')}</small>
+                    </div>
+                    <span class="text-muted">R$ ${itemTotal.toFixed(2).replace('.', ',')}</span>
+                    <input type="number" class="form-control quantidade-input" value="${item.quantidade}" min="1" style="width: 60px; margin-left: 15px;" data-id="${item.id}">
+                    <button class="btn btn-danger btn-sm" onclick="removerItem(${item.id})">Remover</button>
+                `;
+    
+                listaCarrinho.appendChild(li);
+            });
+    
+            // Atualiza o total de itens e o preço total
+            totalItens.textContent = `${totalQuantidade} item${totalQuantidade > 1 ? 's' : ''}`;
+            totalPreco.textContent = `R$ ${total.toFixed(2).replace('.', ',')}`;
+        }
+    
+// Função para remover um item do carrinho
+function removerItem(produtoId) {
+        let carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
+        // Filtra o carrinho para remover o item com o produtoId especificado
+        carrinho = carrinho.filter(item => item.id !== produtoId);
+        
+        // Atualiza o localStorage com o novo carrinho
+        localStorage.setItem('carrinho', JSON.stringify(carrinho));
+        
+        // Recarrega o carrinho na interface
+        carregarCarrinho();
+    }
+
+    // Função para atualizar a quantidade de itens do carrinho
+    function atualizarQuantidade(produtoId, novaQuantidade) {
+        let carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
+        
+        // Encontra o item no carrinho e atualiza a quantidade
+        carrinho.forEach(item => {
+            if (item.id === produtoId) {
+                item.quantidade = novaQuantidade;
+            }
+        });
+
+        // Atualiza o localStorage com a nova quantidade
+        localStorage.setItem('carrinho', JSON.stringify(carrinho));
+
+        // Recarrega o carrinho na interface
+        carregarCarrinho();
+    }
+
+    // Função para lidar com a mudança de quantidade via input
+    document.addEventListener('input', function(event) {
+        if (event.target.classList.contains('quantidade-input')) {
+            let produtoId = parseInt(event.target.getAttribute('data-id'));
+            let novaQuantidade = parseInt(event.target.value);
+
+            // Atualiza a quantidade se for um número válido e maior que zero
+            if (novaQuantidade > 0) {
+                atualizarQuantidade(produtoId, novaQuantidade);
+            }
+        }
+    });
+
+    // Carregar o carrinho quando a página for carregada
+    document.addEventListener('DOMContentLoaded', carregarCarrinho);
+</script>
 
 </body>
 

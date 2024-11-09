@@ -56,20 +56,22 @@ $produtos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     <div class="container mt-auto" style="max-width:fit-content;">
         <div class="row">
-            <?php foreach ($produtos as $produto): ?>
-                <div class="col-auto">
-                    <div class="card" style="width: 100%; max-width: 20rem;">
-                    <img src="imagens/<?= htmlspecialchars($produto['imagem']) ?>" alt="Imagem do Produto" class="card-img-top" style="width: 150px; height: auto; margin: 0 auto; display: block;">
-                    <div class="card-body">
-                            <h7 class="card-title">Cod <?= htmlspecialchars($produto['id']) ?></h7>
-                            <p class="card-text"><?= htmlspecialchars($produto['descricao']) ?></p>
-                            <p class="price">R$ <?= number_format($produto['preco'], 2, ',', '.') ?></p>
-                            <p class="stock">Estoque: <?= htmlspecialchars($produto['qtd_estoque']) ?> unidades</p>
-                            <button class="btn btn-dark btn-block">Adicionar ao carrinho</button>
-                        </div>
-                    </div>
-                </div>
-            <?php endforeach; ?>
+        <?php foreach ($produtos as $produto): ?>
+    <div class="col-auto">
+        <div class="card" style="width: 100%; max-width: 20rem;">
+        <img src="imagens/<?= htmlspecialchars($produto['imagem']) ?>" alt="Imagem do Produto" class="card-img-top" style="width: 150px; height: auto; margin: 0 auto; display: block;">
+        <div class="card-body">
+            <h7 class="card-title">Cod <?= htmlspecialchars($produto['id']) ?></h7>
+            <p class="card-text"><?= htmlspecialchars($produto['descricao']) ?></p>
+            <p class="price">R$ <?= number_format($produto['preco'], 2, ',', '.') ?></p>
+            <p class="stock">Estoque: <?= htmlspecialchars($produto['qtd_estoque']) ?> unidades</p>
+
+            <button class="btn btn-dark btn-block" onclick="adicionarAoCarrinho(<?= $produto['id'] ?>, '<?= htmlspecialchars($produto['descricao']) ?>', <?= $produto['preco'] ?>)">Adicionar ao carrinho</button>
+
+        </div>
+        </div>
+    </div>
+<?php endforeach; ?>
         </div>
     </div>
 
@@ -112,8 +114,36 @@ $produtos = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </div>
     </footer>
 
+    <script>
+function adicionarAoCarrinho(produtoId, descricao, preco) {
+    // Recuperar o carrinho do localStorage ou inicializar um novo
+    let carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
+
+    // Verificar se o produto já está no carrinho
+    let produtoExistente = carrinho.find(item => item.id === produtoId);
+
+    if (produtoExistente) {
+        // Se já existir, aumentar a quantidade
+        produtoExistente.quantidade += 1;
+    } else {
+        // Se não existir, adicionar o produto ao carrinho
+        carrinho.push({
+            id: produtoId,
+            descricao: descricao,
+            preco: preco,
+            quantidade: 1
+        });
+    }
+
+    // Atualizar o localStorage com o carrinho atualizado
+    localStorage.setItem('carrinho', JSON.stringify(carrinho));
+
+    alert('Produto adicionado ao carrinho!');
+}
+</script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+
 
 </body>
 </html>

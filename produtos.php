@@ -45,7 +45,7 @@ $produtos = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <a class="navbar-brand" href="login.html">
                 <img src="imagens/userLogin.png" width="30" height="30" alt="Login Icon">
             </a>
-            <a class="navbar-brand" href="carrinho.html">
+            <a class="navbar-brand" href="carrinho.php">
     <div style="position: relative;">
         <img src="imagens/carrinho.png" width="30" height="30" alt="Carrinho de compras">
         <!-- Badge para mostrar o número de itens do carrinho -->

@@ -14,6 +14,9 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styleCarrinho.css" type="text/css">
     <script src="carrinho.js"></script>
+
+
+
 </head>
 
 <body class="bg-body-tertiary">
@@ -33,7 +36,19 @@
                 <li class="nav-item">
                     <a class="nav-link" href="produtos.php">Produtos</a>
                 </li>
-                    
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                        Categorias
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" href="mercearia.html">Mercearia</a>
+                        <a class="dropdown-item" href="enlatados.html">Enlatados</a>
+                        <a class="dropdown-item" href="#">Bebidas</a>
+                        <a class="dropdown-item" href="#">Higiene Pessoal</a>
+                        <a class="dropdown-item" href="#">Utensílios Domésticos</a>
+                    </div>
+                </li>
             </ul>
             <form class="d-flex ms-auto">
                 <input class="form-control me-2" type="search" placeholder="Buscar" aria-label="Buscar">
@@ -44,7 +59,7 @@
             <a class="navbar-brand" href="login.html">
                 <img src="imagens/userLogin.png" width="30" height="30" alt="Login Icon">
             </a>
-            <a class="navbar-brand" href="carrinho.html">
+            <a class="navbar-brand" href="carrinho.php">
                 <div style="position: relative;">
                     <img src="imagens/carrinho.png" width="30" height="30" alt="Carrinho de compras">
                     <!-- Badge para mostrar o número de itens do carrinho -->
@@ -226,6 +241,40 @@
                                 <label class="form-check-label" for="paypal">Pix</label>
                             </div>
                         </div>
+
+                        <div class="row gy-3">
+                            <div class="col-md-6">
+                                <label for="cc-name" class="form-label">Nome no cartão</label>
+                                <input type="text" class="form-control" id="cc-name" placeholder="" required>
+                                <small class="text-body-secondary">Nome completo presente no cartão.</small>
+                                <div class="invalid-feedback">
+                                    Nome inválido.
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="cc-number" class="form-label">Número do cartão</label>
+                                <input type="text" class="form-control" id="cc-number" placeholder="" required>
+                                <div class="invalid-feedback">
+                                    Número inválido.
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <label for="cc-expiration" class="form-label">Data de vencimento</label>
+                                <input type="text" class="form-control" id="cc-expiration" placeholder="" required>
+                                <div class="invalid-feedback">
+                                    Data de vencimento inválida.
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <label for="cc-cvv" class="form-label">CVV</label>
+                                <input type="text" class="form-control" id="cc-cvv" placeholder="" required>
+                                <div class="invalid-feedback">
+                                    Código de segurança inválido.
+                                </div>
+                            </div>
                         </div>
 
                         <hr class="my-4">
@@ -245,6 +294,8 @@
             </ul>
         </footer>
     </div>
+
+
 </body>
 
 </html>

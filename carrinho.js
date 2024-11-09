@@ -18,7 +18,7 @@
   })
 })()
 
-//CONTADOR E ADICIONAR AO CARRINHO
+//CONTADOR E ADICIONAR AO CARRINHO:
 
 
 // Função para atualizar o contador de itens no ícone do carrinho

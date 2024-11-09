@@ -42,7 +42,7 @@ $produtos = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <i class="fas fa-search"></i> <!-- Ícone de lupa -->
                 </button>
             </form>
-            <a class="navbar-brand" href="login.html">
+            <a class="navbar-brand" href="pagLogin.php">
                 <img src="imagens/userLogin.png" width="30" height="30" alt="Login Icon">
             </a>
             <a class="navbar-brand" href="carrinho.php">

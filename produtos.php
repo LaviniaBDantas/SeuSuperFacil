@@ -15,6 +15,7 @@ $produtos = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <link rel="stylesheet" href="styleProdutos.css" type="text/css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <script src="carrinho.js"></script>
 </head>
 <body>
 
@@ -32,7 +33,7 @@ $produtos = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <a class="nav-link" href="home.html">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Produtos</a>
+                    <a class="nav-link" href="#">Ofertas</a>
                 </li>
             </ul>
             <form class="d-flex ms-auto">
@@ -45,8 +46,21 @@ $produtos = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <img src="imagens/userLogin.png" width="30" height="30" alt="Login Icon">
             </a>
             <a class="navbar-brand" href="carrinho.html">
-                <img src="imagens/carrinho.png" width="30" height="30" alt="Carrinho de compras">
-            </a>
+    <div style="position: relative;">
+        <img src="imagens/carrinho.png" width="30" height="30" alt="Carrinho de compras">
+        <!-- Badge para mostrar o número de itens do carrinho -->
+        <span id="cart-count" style="
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: red;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 12px;
+            display: none;">0</span>
+    </div>
+</a>
         </div>
     </nav>
 
@@ -113,34 +127,6 @@ $produtos = $stmt->fetchAll(PDO::FETCH_ASSOC);
             </div>
         </div>
     </footer>
-
-    <script>
-function adicionarAoCarrinho(produtoId, descricao, preco) {
-    // Recuperar o carrinho do localStorage ou inicializar um novo
-    let carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
-
-    // Verificar se o produto já está no carrinho
-    let produtoExistente = carrinho.find(item => item.id === produtoId);
-
-    if (produtoExistente) {
-        // Se já existir, aumentar a quantidade
-        produtoExistente.quantidade += 1;
-    } else {
-        // Se não existir, adicionar o produto ao carrinho
-        carrinho.push({
-            id: produtoId,
-            descricao: descricao,
-            preco: preco,
-            quantidade: 1
-        });
-    }
-
-    // Atualizar o localStorage com o carrinho atualizado
-    localStorage.setItem('carrinho', JSON.stringify(carrinho));
-
-    alert('Produto adicionado ao carrinho!');
-}
-</script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 

@@ -51,17 +51,17 @@ $produtos = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </nav>
 
     <div class="text-center mt-4">
-        <h1><b>Produtos</b>!</h1>
+       
     </div>
 
     <div class="container mt-auto" style="max-width:fit-content;">
         <div class="row">
             <?php foreach ($produtos as $produto): ?>
-                <div class="col-md-3">
-                    <div class="card" style="width: 100%; max-width: 18rem;">
-                        <img src="data:image/jpeg;base64,<?= base64_encode($produto['imagem']) ?>" alt="Imagem do Produto" class="card-img-top" style="height: 150px; object-fit: cover;">
-                        <div class="card-body">
-                            <h5 class="card-title">Produto #<?= htmlspecialchars($produto['id']) ?></h5>
+                <div class="col-auto">
+                    <div class="card" style="width: 100%; max-width: 20rem;">
+                    <img src="imagens/<?= htmlspecialchars($produto['imagem']) ?>" alt="Imagem do Produto" class="card-img-top" style="width: 150px; height: auto; margin: 0 auto; display: block;">
+                    <div class="card-body">
+                            <h7 class="card-title">Cod <?= htmlspecialchars($produto['id']) ?></h7>
                             <p class="card-text"><?= htmlspecialchars($produto['descricao']) ?></p>
                             <p class="price">R$ <?= number_format($produto['preco'], 2, ',', '.') ?></p>
                             <p class="stock">Estoque: <?= htmlspecialchars($produto['qtd_estoque']) ?> unidades</p>

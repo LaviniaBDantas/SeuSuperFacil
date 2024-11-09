@@ -2,7 +2,7 @@
     $host = 'localhost'; // Substitua pelo seu host, se necessário
     $db = 'seusuperfacil'; // Nome do banco de dados
     $user = 'root'; // Usuário do banco de dados
-    $pass = 'lavis2016'; // Senha do banco de dados
+    $pass = ''; // Senha do banco de dados
     $dsn = "mysql:host=$host;dbname=$db;charset=utf8mb4";
 
     try {

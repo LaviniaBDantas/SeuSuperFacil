@@ -20,7 +20,7 @@ $produtos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="#">
-            <img src="../imagens/Logo.jpg" width="90" height="90" alt="Logo">
+            <img src="imagens/Logo.jpg" width="90" height="90" alt="Logo">
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
             aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -42,10 +42,10 @@ $produtos = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 </button>
             </form>
             <a class="navbar-brand" href="login.html">
-                <img src="../imagens/userLogin.png" width="30" height="30" alt="Login Icon">
+                <img src="imagens/userLogin.png" width="30" height="30" alt="Login Icon">
             </a>
             <a class="navbar-brand" href="carrinho.html">
-                <img src="../imagens/carrinho.png" width="30" height="30" alt="Carrinho de compras">
+                <img src="imagens/carrinho.png" width="30" height="30" alt="Carrinho de compras">
             </a>
         </div>
     </nav>
@@ -59,7 +59,7 @@ $produtos = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <?php foreach ($produtos as $produto): ?>
                 <div class="col-md-3">
                     <div class="card" style="width: 100%; max-width: 18rem;">
-                        <img src="https://via.placeholder.com/200" alt="Imagem do Produto" class="card-img-top" style="height: 150px; object-fit: cover;">
+                        <img src="data:image/jpeg;base64,<?= base64_encode($produto['imagem']) ?>" alt="Imagem do Produto" class="card-img-top" style="height: 150px; object-fit: cover;">
                         <div class="card-body">
                             <h5 class="card-title">Produto #<?= htmlspecialchars($produto['id']) ?></h5>
                             <p class="card-text"><?= htmlspecialchars($produto['descricao']) ?></p>

@@ -1,26 +1,21 @@
 <?php
 session_start(); 
 
-include 'db.php'; 
+include 'db.php'; // Inclui a conexão com o banco de dados
 
-// Verifica se o usuário está logado
-if (!isset($_SESSION['logged_in']) || !$_SESSION['logged_in']) {
-    // Redireciona para a página de login se não estiver logado
-    $_SESSION['error'] = 'Você precisa estar logado para acessar esta página.';
-    header("Location: login.html");
-    exit;
-}
+// Pega o CPF do usuário da sessão
+$user_cpf = $_SESSION['user_id'];
 
-// Se tiver, pega o CPF do usuário 
-$user_cpf = $_SESSION['user_cpf'];
-
+// Prepara a consulta para buscar os dados do cliente pelo CPF
 $sql = "SELECT nome, email, telefone,cpf FROM cliente WHERE cpf = :cpf";
 $stmt = $pdo->prepare($sql);
 $stmt->bindParam(':cpf', $user_cpf, PDO::PARAM_STR);
 
+// Executa a consulta
 $stmt->execute();
 $cliente = $stmt->fetch(PDO::FETCH_ASSOC);
 
+// Verifica se encontrou o usuário
 if (!$cliente) {
     echo "Usuário não encontrado.";
     exit;

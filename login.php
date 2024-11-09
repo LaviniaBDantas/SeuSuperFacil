@@ -9,7 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (empty($email) || empty($senha)) {
         echo "<script>
                 sessionStorage.setItem('error', 'Email e senha são obrigatórios.');
-                window.location.href = 'login.html';
+                window.location.href = 'Novodados.php';
               </script>";
         exit;
     }
@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         if (password_verify($senha, $cliente['senha'])) {
             $_SESSION['user_id'] = $cliente['cpf'];
-            header("Location: home.html");
+            header("Location: dados.php");
             exit;
         } else {
             echo "<script>

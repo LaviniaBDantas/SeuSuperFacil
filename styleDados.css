@@ -1,0 +1,44 @@
+body{
+    background-color: rgb(219, 213, 197);
+}
+
+.caixa-dados {
+    width: 400px; 
+    padding: 20px; 
+    background-color: whitesmoke;
+    margin-top: 20px;
+    box-sizing: border-box;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 10px;
+    text-align: left; 
+}
+
+.caixa-dados h1 {
+    text-align: center;
+    color: black;
+    margin-bottom: 20px;
+}
+
+.caixa-dados p {
+    font-size: 16px;
+    color: #333;
+    margin: 8px 0; 
+    padding-left: 10px; 
+}
+
+.caixa-dados button {
+    display: block;
+    width: 100%; 
+    margin-top: 15px; 
+    padding: 10px;
+    font-size: 14px;
+    border-radius: 10px;
+    color: white;
+    background-color: red;
+    border: none;
+    cursor: pointer;
+}

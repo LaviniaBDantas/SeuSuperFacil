@@ -30,16 +30,14 @@
     </div>
 
     <script>
-        // Variável PHP para verificar se o usuário está logado
+        //verificando se usuario tá logado
         const isLoggedIn = <?php echo isset($_SESSION['user_id']) ? 'true' : 'false'; ?>;
         
-        // Mostra/esconde elementos com base no status de login
         document.getElementById('login-form').style.display = isLoggedIn ? 'none' : 'block';
         document.getElementById('register-btn').style.display = isLoggedIn ? 'none' : 'block';
         document.getElementById('dados-btn').style.display = isLoggedIn ? 'block' : 'none';
         document.getElementById('logout-btn').style.display = isLoggedIn ? 'block' : 'none';
 
-        // Exibe a mensagem de erro, se houver, e depois a remove
         const errorMessage = sessionStorage.getItem('error');
         if (errorMessage) {
             document.getElementById('error-message').textContent = errorMessage;

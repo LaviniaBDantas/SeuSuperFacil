@@ -115,6 +115,8 @@ $produtos = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </footer>
 
     <script>
+
+        
 function adicionarAoCarrinho(produtoId, descricao, preco) {
     // Recuperar o carrinho do localStorage ou inicializar um novo
     let carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];

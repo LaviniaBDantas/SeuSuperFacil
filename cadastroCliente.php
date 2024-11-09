@@ -14,12 +14,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $senha2 = $_POST['senha2'];
 
     if (empty($nome) || empty($cpf) || empty($email) || empty($telefone) || empty($senha) || empty($senha2)) {
-        echo "Todos os campos são obrigatórios.";
+        echo "<script>alert('Todos os campos são obrigatórios.'); window.history.back();</script>";
         exit;
     }
 
     if ($senha !== $senha2) {
-        echo "As senhas não coincidem.";
+        echo "<script>alert('As senhas não coincidem.'); window.history.back();</script>";
         exit;
     }
 
@@ -36,13 +36,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             ':telefone' => $telefone,
             ':senha' => $senhaHash,
         ]);
-        echo "Cadastro realizado com sucesso.";
-        header("Location: home.html"); 
+        echo "<script>alert('Cadastro realizado com sucesso.'); window.location.href='home.html';</script>";
         exit;
     } catch (PDOException $e) {
-        echo "Erro ao realizar o cadastro: " . $e->getMessage();
+        // Verifica se o erro é de duplicidade
+        if ($e->getCode() == 23000) { 
+            echo "<script>alert('Usuário já cadastrado.'); window.history.back();</script>";
+        } else {
+            echo "<script>alert('Erro ao realizar o cadastro. Tente novamente mais tarde.'); window.history.back();</script>";
+        }
     }
 } else {
-    echo "Método POST não foi usado.";
+    echo "<script>alert('Método POST não foi usado.'); window.history.back();</script>";
 }
 ?>

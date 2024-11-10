@@ -118,7 +118,6 @@ if (!$cliente) {
                         <input type="hidden" name="estado" id="input-estado">
                         <input type="hidden" name="cep" id="input-cep">
 
-                        
                         <script>
                             function carregarCamposEndereco() {
                                 document.getElementById('input-rua').value = document.getElementById('address').value;
@@ -139,12 +138,6 @@ if (!$cliente) {
                                     preco: item.preco,
                                     quantidade: item.quantidade
                                 }));
-
-                                // Atualiza o input oculto com os itens em formato JSON
-                                document.getElementById('input-itens').value = JSON.stringify(produtoIds);
-
-                                // Limpar o carrinho após a compra ser finalizada
-                                localStorage.removeItem('carrinho');
                             });
                         </script>
 

@@ -1,7 +1,7 @@
 <?php
 include 'db.php';
 
-$sql = "SELECT * FROM produto"; // Altere para o nome correto da tabela se necessário
+$sql = "SELECT * FROM produto";
 $stmt = $pdo->query($sql);
 $produtos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
@@ -75,11 +75,8 @@ $produtos = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <div class="card" style="width: 100%; max-width: 20rem;">
         <img src="imagens/<?= htmlspecialchars($produto['imagem']) ?>" alt="Imagem do Produto" class="card-img-top" style="width: 150px; height: auto; margin: 0 auto; display: block;">
         <div class="card-body">
-            <h7 class="card-title">Cod <?= htmlspecialchars($produto['id']) ?></h7>
             <p class="card-text"><?= htmlspecialchars($produto['descricao']) ?></p>
             <p class="price">R$ <?= number_format($produto['preco'], 2, ',', '.') ?></p>
-            <p class="stock">Estoque: <?= htmlspecialchars($produto['qtd_estoque']) ?> unidades</p>
-
             <button class="btn btn-dark btn-block" onclick="adicionarAoCarrinho(<?= $produto['id'] ?>, '<?= htmlspecialchars($produto['descricao']) ?>', <?= $produto['preco'] ?>)">Adicionar ao carrinho</button>
 
         </div>

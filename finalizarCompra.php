@@ -9,7 +9,6 @@ if (!isset($_SESSION['user_id'])) {
 include 'db.php';
 
 // Dados recebidos do formulário
-$total = $_POST['total'] ?? 0;
 $cpf_cliente = $_SESSION['user_id'];
 
 // Dados do endereço
@@ -29,6 +28,12 @@ if (empty($itens)) {
     exit;
 }
 
+// Calcular o total dos itens
+$total = 0;
+foreach ($itens as $item) {
+    $total += $item['preco'] * $item['quantidade']; // Assumindo que cada item tem 'preco'
+}
+
 try {
     $pdo->beginTransaction();
 
@@ -39,14 +44,13 @@ try {
 
     // Inserir itens na tabela 'compra_contem_produto'
     $stmt = $pdo->prepare("INSERT INTO compra_contem_produto (cod_compra, cod_produto, quantidade) VALUES (:cod_compra, :cod_produto, :quantidade)");
-foreach ($itens as $item) {
-    $stmt->execute([
-        ':cod_compra' => $compraId,
-        ':cod_produto' => $item['id'],
-        ':quantidade' => $item['quantidade'] // Certifique-se de que esta linha está presente
-    ]);
-}
-
+    foreach ($itens as $item) {
+        $stmt->execute([
+            ':cod_compra' => $compraId,
+            ':cod_produto' => $item['id'],
+            ':quantidade' => $item['quantidade']
+        ]);
+    }
 
     // Inserir na tabela 'compra' com o ID de compra gerado
     $stmt = $pdo->prepare("INSERT INTO compra (id, total, data, endereco_entrega, cpf_cliente) VALUES (:id, :total, NOW(), :endereco, :cpf_cliente)");

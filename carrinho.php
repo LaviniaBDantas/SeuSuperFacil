@@ -59,12 +59,12 @@ if (!$cliente) {
                     <a class="nav-link" href="http://localhost/SeuSuperFacil/produtos.php">Produtos</a>
                 </li>
             </ul>
-            <form class="d-flex ms-auto">
-                <input class="form-control me-2" type="search" placeholder="Buscar" aria-label="Buscar">
-                <button class="btn btn-outline-success" type="submit">
-                    <i class="fas fa-search"></i> <!-- Ícone de lupa -->
-                </button>
-            </form>
+            <form class="d-flex ms-auto" method="GET" action="buscarProduto.php">
+                    <input class="form-control me-2" type="search" name="query" placeholder="Buscar" aria-label="Buscar" required>
+                    <button class="btn btn-outline-success" type="submit">
+                        <i class="fas fa-search"></i> <!-- Ícone de lupa -->
+                    </button>
+                </form>            
             <a class="navbar-brand" href="pagLogin.php">
                 <img src="imagens/userLogin.png" width="30" height="30" alt="Login Icon">
             </a>
@@ -127,12 +127,29 @@ if (!$cliente) {
                                 document.getElementById('input-cep').value = document.getElementById('zip').value;
                             }
 
-                            // Adiciona um evento ao formulário para preencher os campos ocultos antes de enviar
-                            document.getElementById('form-finalizar-compra').addEventListener('submit', carregarCamposEndereco);
+                            document.getElementById('form-finalizar-compra').addEventListener('submit', function (event) {
+                                carregarCamposEndereco();
+
+                                // Carregar os itens do carrinho com suas quantidades para envio
+                                let carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
+                                let produtoIds = carrinho.map(item => ({
+                                    id: item.id,
+                                    descricao: item.descricao,
+                                    preco: item.preco,
+                                    quantidade: item.quantidade
+                                }));
+
+                                // Atualiza o input oculto com os itens em formato JSON
+                                document.getElementById('input-itens').value = JSON.stringify(produtoIds);
+
+                                // Limpar o carrinho após a compra ser finalizada
+                                localStorage.removeItem('carrinho');
+                            });
                         </script>
 
                         <button type="submit" class="btn btn-success w-100 mt-3">Finalizar Compra</button>
                     </form>
+
 
                 </div>
                 <div class="col-md-7 col-lg-8">
@@ -224,6 +241,7 @@ if (!$cliente) {
                                     <label class="form-c    heck-label" for="pix">Pix</label>
                                 </div>
                             </div>
+
 
                             <hr class="my-4">
                         </form>

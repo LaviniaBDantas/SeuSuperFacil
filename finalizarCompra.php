@@ -38,13 +38,15 @@ try {
     $compraId = $result['next_id'];
 
     // Inserir itens na tabela 'compra_contem_produto'
-    $stmt = $pdo->prepare("INSERT INTO compra_contem_produto (cod_compra, cod_produto) VALUES (:cod_compra, :cod_produto)");
-    foreach ($itens as $item) {
-        $stmt->execute([
-            ':cod_compra' => $compraId,
-            ':cod_produto' => $item['id']
-        ]);
-    }
+    $stmt = $pdo->prepare("INSERT INTO compra_contem_produto (cod_compra, cod_produto, quantidade) VALUES (:cod_compra, :cod_produto, :quantidade)");
+foreach ($itens as $item) {
+    $stmt->execute([
+        ':cod_compra' => $compraId,
+        ':cod_produto' => $item['id'],
+        ':quantidade' => $item['quantidade'] // Certifique-se de que esta linha está presente
+    ]);
+}
+
 
     // Inserir na tabela 'compra' com o ID de compra gerado
     $stmt = $pdo->prepare("INSERT INTO compra (id, total, data, endereco_entrega, cpf_cliente) VALUES (:id, :total, NOW(), :endereco, :cpf_cliente)");

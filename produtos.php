@@ -35,16 +35,16 @@ $produtos = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <a class="nav-link" href="#">Produtos</a>
                 </li>
             </ul>
-            <form class="d-flex ms-auto">
-                <input class="form-control me-2" type="search" placeholder="Buscar" aria-label="Buscar">
-                <button class="btn btn-outline-success" type="submit">
-                    <i class="fas fa-search"></i> <!-- Ícone de lupa -->
-                </button>
-            </form>
-            <a class="navbar-brand" href="login.html">
+            <form class="d-flex ms-auto" method="GET" action="buscarProduto.php">
+                    <input class="form-control me-2" type="search" name="query" placeholder="Buscar" aria-label="Buscar" required>
+                    <button class="btn btn-outline-success" type="submit">
+                        <i class="fas fa-search"></i> <!-- Ícone de lupa -->
+                    </button>
+                </form>            
+            <a class="navbar-brand" href="pagLogin.php">
                 <img src="imagens/userLogin.png" width="30" height="30" alt="Login Icon">
             </a>
-            <a class="navbar-brand" href="carrinho.html">
+            <a class="navbar-brand" href="carrinho.php">
                 <img src="imagens/carrinho.png" width="30" height="30" alt="Carrinho de compras">
             </a>
         </div>

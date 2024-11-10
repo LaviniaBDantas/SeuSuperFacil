@@ -11,7 +11,7 @@ include 'db.php'; // Inclui a conexão com o banco de dados
 $user_cpf = $_SESSION['user_id'];
 
 // Consulta para buscar os dados do cliente
-$sql = "SELECT nome, email, telefone, cpf FROM cliente WHERE cpf = :cpf";
+$sql = "SELECT nome, telefone, cpf FROM cliente WHERE cpf = :cpf";
 $stmt = $pdo->prepare($sql);
 $stmt->bindParam(':cpf', $user_cpf, PDO::PARAM_STR);
 $stmt->execute();
@@ -38,6 +38,7 @@ if (!$cliente) {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styleCarrinho.css" type="text/css">
+    <script src="carrinho.js"></script>
 </head>
 
 <body class="bg-body-tertiary">
@@ -68,10 +69,24 @@ if (!$cliente) {
                 <img src="imagens/userLogin.png" width="30" height="30" alt="Login Icon">
             </a>
             <a class="navbar-brand" href="carrinho.php">
-                <img src="imagens/carrinho.png" width="30" height="30" alt="Carrinho de compras">
+                <div style="position: relative;">
+                    <img src="imagens/carrinho.png" width="30" height="30" alt="Carrinho de compras">
+                    <!-- Badge para mostrar o número de itens do carrinho -->
+                    <span id="cart-count" style="
+                        position: absolute;
+                        top: -8px;
+                        right: -8px;
+                        background-color: red;
+                        color: white;
+                        border-radius: 50%;
+                        padding: 2px 6px;
+                        font-size: 12px;
+                        display: none;">0</span>
+                </div>
             </a>
         </div>
     </nav>
+
 
     <div class="container-fluid">
         <main>
@@ -95,6 +110,27 @@ if (!$cliente) {
                     <form id="form-finalizar-compra" action="finalizarCompra.php" method="POST">
                         <input type="hidden" name="total" id="input-total"> <!-- Total do carrinho -->
                         <input type="hidden" name="itens" id="input-itens"> <!-- Produtos no carrinho -->
+
+                        <!-- Campos de endereço para serem enviados no formulário -->
+                        <input type="hidden" name="rua" id="input-rua">
+                        <input type="hidden" name="numero" id="input-numero">
+                        <input type="hidden" name="cidade" id="input-cidade">
+                        <input type="hidden" name="estado" id="input-estado">
+                        <input type="hidden" name="cep" id="input-cep">
+
+                        <script>
+                            function carregarCamposEndereco() {
+                                document.getElementById('input-rua').value = document.getElementById('address').value;
+                                document.getElementById('input-numero').value = document.getElementById('num').value;
+                                document.getElementById('input-cidade').value = document.getElementById('city').value;
+                                document.getElementById('input-estado').value = document.getElementById('state').value;
+                                document.getElementById('input-cep').value = document.getElementById('zip').value;
+                            }
+
+                            // Adiciona um evento ao formulário para preencher os campos ocultos antes de enviar
+                            document.getElementById('form-finalizar-compra').addEventListener('submit', carregarCamposEndereco);
+                        </script>
+
                         <button type="submit" class="btn btn-success w-100 mt-3">Finalizar Compra</button>
                     </form>
 
@@ -118,11 +154,6 @@ if (!$cliente) {
                                     <label for="tel" class="form-label">Telefone</label>
                                     <input type="text" class="form-control" id="tel"
                                         value="<?php echo htmlspecialchars($cliente['telefone']); ?>" required>
-                                </div>
-                                <div class="col-12">
-                                    <label for="email" class="form-label">Email</label>
-                                    <input type="email" class="form-control" id="email"
-                                        value="<?php echo htmlspecialchars($cliente['email']); ?>" required>
                                 </div>
                             </div>
 

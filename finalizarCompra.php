@@ -9,7 +9,7 @@ if (!isset($_SESSION['user_id'])) {
 include 'db.php';
 
 // Dados recebidos do formulário
-$total = $_POST['total'];
+$total = $_POST['total'] ?? 0;
 $cpf_cliente = $_SESSION['user_id'];
 
 // Dados do endereço
@@ -24,43 +24,42 @@ $enderecoCompleto = "$rua, Número: $numero, $cidade - $estado, CEP: $cep";
 
 // Decodifica os itens do carrinho recebidos via JSON
 $itens = json_decode($_POST['itens'], true);
+if (empty($itens)) {
+    echo "Nenhum item encontrado no carrinho.";
+    exit;
+}
 
 try {
     $pdo->beginTransaction();
 
+    // Criar um novo ID de compra manualmente para ser usado como chave
+    $stmt = $pdo->query("SELECT IFNULL(MAX(cod_compra), 0) + 1 AS next_id FROM compra_contem_produto");
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    $compraId = $result['next_id'];
+
     // Inserir itens na tabela 'compra_contem_produto'
-    $compraId = null; // Atribuir um ID temporário
     $stmt = $pdo->prepare("INSERT INTO compra_contem_produto (cod_compra, cod_produto) VALUES (:cod_compra, :cod_produto)");
     foreach ($itens as $item) {
-        $stmt->execute([
-            ':cod_compra' => $compraId, // Este ID será atualizado quando 'compra' for inserido
-            ':cod_produto' => $item['id']
-        ]);
-    }
-
-    // Inserir na tabela 'compra'
-    $stmt = $pdo->prepare("INSERT INTO compra (total, data, endereco_entrega, cpf_cliente, email) VALUES (:total, NOW(), :endereco, :cpf_cliente, :email)");
-    $stmt->execute([
-        ':total' => $total,
-        ':endereco' => $enderecoCompleto,
-        ':cpf_cliente' => $cpf_cliente,
-        ':email' => $_POST['email']
-    ]);
-
-    // Atualizar o ID de compra com o autoincrement gerado
-    $compraId = $pdo->lastInsertId();
-
-    // Atualizar `compra_contem_produto` com o ID correto
-    foreach ($itens as $item) {
-        $stmt = $pdo->prepare("UPDATE compra_contem_produto SET cod_compra = :cod_compra WHERE cod_produto = :cod_produto");
         $stmt->execute([
             ':cod_compra' => $compraId,
             ':cod_produto' => $item['id']
         ]);
     }
 
+    // Inserir na tabela 'compra' com o ID de compra gerado
+    $stmt = $pdo->prepare("INSERT INTO compra (id, total, data, endereco_entrega, cpf_cliente) VALUES (:id, :total, NOW(), :endereco, :cpf_cliente)");
+    $stmt->execute([
+        ':id' => $compraId,
+        ':total' => $total,
+        ':endereco' => $enderecoCompleto,
+        ':cpf_cliente' => $cpf_cliente
+    ]);
+
     $pdo->commit();
-    echo "Compra finalizada com sucesso!";
+    
+    // Redirecionar para a página de detalhes após o commit
+    header("Location: detalhesCompra.php?compraId=" . $compraId);
+    exit();
 } catch (Exception $e) {
     $pdo->rollBack();
     echo "Falha ao finalizar compra: " . $e->getMessage();
